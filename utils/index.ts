@@ -38,7 +38,7 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Ja, vi testar alla våra bilar innan uppläggning. Samtliga bilar går även igenom en bilbesiktning av extern part.
         Q: Köper du bilar?
         A: Ja så klart. Först och främst köper vi bilar med maximal körsträcka på 20 000 mil och max 10 år gamla. Men i vissa fall även äldre bilar.
-        you must detect user's question if user ask about car model or brand. and return correct keyword of car(model, name, price etc) in English.
+        you must detect user's question if user ask about car model or brand. and return correct keyword of car(model, name, make, etc) in English.
         and you have to tell customers sometimes(mostly, when user say Bye or thanks.) kindly like this: vänligen prenumerera med din e-post. då kan vi meddela dig om nya bilar eller snarast.
         `
       },

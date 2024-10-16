@@ -35,12 +35,9 @@ export const Footer: FC = () => {
   };
 
   return (
-  <div className="flex flex-row h-[80px] sm:h-[120px] border-t border-neutral-300 py-2 px-8 items-center sm:justify-between justify-center">
+  <div className="flex flex-row h-[80px] border-t border-neutral-300 py-2 px-8 items-center sm:justify-between justify-center">
     <div className="mx-auto p-4 bg-white shadow-lg rounded-lg">
       <form onSubmit={handleSubmit} className="flex items-center space-x-2">
-        <label className="flex-shrink-0 text-xl font-bold" htmlFor="email">
-          Prenumerera på vårt nyhetsbrev - 
-        </label>
         <input
           type="email"
           name="email"
@@ -49,7 +46,7 @@ export const Footer: FC = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
           placeholder="Ange din e-postadress..."
-          className="flex-grow border w-[300px] sm:w-[350px] border-gray-300 rounded-l-md p-2 focus:outline-none focus:ring-2 focus:ring-[#008d7f]"
+          className="flex-grow border w-[200px] sm:w-[250px] border-gray-300 rounded-l-md p-2 focus:outline-none focus:ring-2 focus:ring-[#008d7f]"
         />
         <button type="submit" className="bg-[#008d7f] text-white font-bold py-2 px-4 rounded-md hover:bg-[#95ebe2]">
           Prenumerera

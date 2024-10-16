@@ -132,9 +132,9 @@ export default function Home() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="fixed bottom-0 right-0 mb-4 mr-4">
+          {/* <div className="fixed bottom-20 right-0 mb-4 mr-4">
             <Image src={carImage} alt="Car" width={500} />
-          </div>
+          </div> */}
         </div>
         <Footer />
       </div>
