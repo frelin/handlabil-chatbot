@@ -18,6 +18,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
   const [keyword, setKeyword] = useState(false);
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<any[]>([false,false,false]);
+  const [filteredMessage, setFilteredMessage] = useState<string>('');
 
   const openModal = (index: number) => {
     const updatedModals = [...isModalOpen];
@@ -38,6 +39,13 @@ export const ChatMessage: FC<Props> = ({ message }) => {
       var word = message.content.split("Keyword: ")[1]?.replaceAll(')', '');
       setFilteredData(carData.filter((item) => item.name.includes(word)));
       console.log(`========${i}===start=============`, word);
+    }
+    if (message.content.includes('Filter')) {
+      var filter = message.content.split("Filter: ")[1]?.split(".")[0].replaceAll(')', '');
+      setFilteredMessage(message.content.replace(' Filter: ' + filter,''));
+
+      setFilteredData(carData.filter((item) => item.name.includes(filter.split(' ')[0] + " " + filter.split(' ')[1]) && Number(item.price.value) <= Number(filter.split(' ')[2])));
+      console.log("sadgsdgsdgdsg", filter.split(' ')[2]);
     }
     i++;
   }, [message.content]);
@@ -171,18 +179,28 @@ export const ChatMessage: FC<Props> = ({ message }) => {
             <Image src={Robot} alt="Robot" className="w-12 h-12 rounded-full" />
           </div>
         </div>
-        {!keyword ? (<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-          {message.content}
-        </div>) : (
-          <div className="flex flex-col gap-4">
-            {filteredData.length > 0 ?(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-              {message.content.split('Keyword')[0]}
-            </div>):(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-              vi har inte det för närvarande men om du anger din e-postadress i nedanstående prenumerationsformulär kan du få ett meddelande när vi har en ny bil.
-            </div>)}
-            {renderMessageContent(message.content)}
+        <div className="flex flex-col gap-4 mr-2">
+          {!keyword ? (
+            <div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
+              {filteredMessage ? filteredMessage : message.content}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {filteredData.length > 0 ?(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
+                {filteredMessage.split('Keyword')[0]}
+              </div>):(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
+                vi har inte det för närvarande men om du anger din e-postadress i nedanstående prenumerationsformulär kan du få ett meddelande när vi har en ny bil.
+              </div>)}
+              {renderMessageContent(message.content)}
+            </div>
+          )}
+
+          {filteredMessage != '' &&(
+            <div className="flex flex-col gap-4">
+              {renderMessageContent(message.content)}
+            </div>
+          )}
           </div>
-        )}
       </div>
     ) : (
       <div className="flex items-center bg-[#008d7f] text-white rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>

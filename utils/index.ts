@@ -36,6 +36,8 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Nej, vi tar bara emot provkörning förfrågningar över telefon eller mail. Vill du att en säljare kontaktar dig för att boka in en provkörnin?
         Q: Är era bilar testade?
         A: Ja, vi testar alla våra bilar innan uppläggning. Samtliga bilar går även igenom en bilbesiktning av extern part.
+        Q: kan du ge mig bilinformation för xxx märke, yyy modell, under ccc pris?
+        A: Ja, här är bilar du vill ha. Filter: xxx yyy ccc.
         Q: Köper du bilar?
         A: Ja så klart. Först och främst köper vi bilar med maximal körsträcka på 20 000 mil och max 10 år gamla. Men i vissa fall även äldre bilar.
         you must detect user's question if user ask about car model or brand. and return correct keyword of car(model, name, make, etc) in English.
