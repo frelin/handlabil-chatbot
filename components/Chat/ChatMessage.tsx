@@ -34,18 +34,33 @@ export const ChatMessage: FC<Props> = ({ message }) => {
 
 
   useEffect(() => {
-    if (message.content.includes('Keyword')) {
+    if (message.content?.includes('Keyword')) {
       setKeyword(true);
-      var word = message.content.split("Keyword: ")[1]?.replaceAll(')', '');
-      setFilteredData(carData.filter((item) => item.name.includes(word)));
-      console.log(`========${i}===start=============`, word);
+      var word = message.content?.split("Keyword: ")[1]?.replaceAll(')', '');
+      console.log("11111111111111111111111", word)
+      if(word?.includes('Under')){
+        setFilteredData(carData.filter((item) => Number(item.price.value) < Number(word?.split("Under ")[1]?.split(" ")[0])).slice(0,3));
+      }else{
+        console.log("fffffffffffffffffff", carData.filter((item) => item.name.includes(word.split(".")[0])))
+        setFilteredData(carData.filter((item) => item.name.includes(word.split(".")[0])));
+        console.log(`========${i}===start=============`, word);
+      }
     }
-    if (message.content.includes('Filter')) {
-      var filter = message.content.split("Filter: ")[1]?.split(".")[0].replaceAll(')', '');
-      setFilteredMessage(message.content.replace(' Filter: ' + filter,''));
+    if (message.content?.includes('Filter')) {
+      var filter = message.content?.split("Filter: ")[1]?.split(".")[0].replaceAll(')', '');
+      console.log("2222222222222222222222", filter)
+      if(filter?.includes('Under')){
+        setFilteredMessage(message.content.replace(' Filter: ' + filter,''));
+  
+        setFilteredData(carData.filter((item) => item.name.includes(filter?.split(' ')[0] + " " + filter?.split(' ')[1]?.split(' ')[0]) && Number(item.price.value) <= Number(filter?.split('under ')[1]?.split(' ')[0])));
+        console.log("sadgsdgsdgdsg", filter?.split(' ')[0], filter?.split(' ')[1]?.split(' ')[0], filter?.split('under ')[1]?.split(' ')[0]);
 
-      setFilteredData(carData.filter((item) => item.name.includes(filter.split(' ')[0] + " " + filter.split(' ')[1]) && Number(item.price.value) <= Number(filter.split(' ')[2])));
-      console.log("sadgsdgsdgdsg", filter.split(' ')[2]);
+      }else{
+        setFilteredMessage(message.content.replace(' Filter: ' + filter,''));
+  
+        setFilteredData(carData.filter((item) => item.name.includes(filter?.split(' ')[0] + " " + filter?.split(' ')[1]) && Number(item.price.value) <= Number(filter?.split(' ')[2])));
+        console.log("sadgsdgsdgdsg", filter?.split(' ')[2]);
+      }
     }
     i++;
   }, [message.content]);
@@ -187,7 +202,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
           ) : (
             <div className="flex flex-col gap-4">
               {filteredData.length > 0 ?(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-                {message.content.split('Keyword')[0]}
+                {message.content?.split('Keyword')[0]}
               </div>):(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
                 vi har inte det för närvarande men om du anger din e-postadress i nedanstående prenumerationsformulär kan du få ett meddelande när vi har en ny bil.
               </div>)}
