@@ -115,7 +115,7 @@ const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onC
 
           <div className="flex justify-between items-center bg-[#008d7f] text-white p-4 rounded-md">
             <span>Månadskostnad: xxx kr</span>
-            <button className="bg-gray-800 text-white px-4 py-2 rounded">nära</button>
+            <button onClick={onClose} className="bg-gray-800 text-white px-4 py-2 rounded">nära</button>
           </div>
         </div>
       </div>
