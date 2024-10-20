@@ -41,8 +41,8 @@ export const ChatMessage: FC<Props> = ({ message }) => {
       if(word?.includes('Under')){
         setFilteredData(carData.filter((item) => Number(item.price.value) < Number(word?.split("Under ")[1]?.split(" ")[0])).slice(0,3));
       }else{
-        console.log("fffffffffffffffffff", carData.filter((item) => item.name.includes(word.split(".")[0])))
-        setFilteredData(carData.filter((item) => item.name.includes(word.split(".")[0])));
+        console.log("fffffffffffffffffff", carData.filter((item) => item.name.includes(word?.split(".")[0])))
+        setFilteredData(carData.filter((item) => item.name.includes(word?.split(".")[0])));
         console.log(`========${i}===start=============`, word);
       }
     }
@@ -57,9 +57,13 @@ export const ChatMessage: FC<Props> = ({ message }) => {
 
       }else{
         setFilteredMessage(message.content.replace(' Filter: ' + filter,''));
-  
-        setFilteredData(carData.filter((item) => item.name.includes(filter?.split(' ')[0] + " " + filter?.split(' ')[1]) && Number(item.price.value) <= Number(filter?.split(' ')[2])));
-        console.log("sadgsdgsdgdsg", filter?.split(' ')[2]);
+        if(filter?.split(' ')[2]){
+          setFilteredData(carData.filter((item) => item.name.includes(filter?.split(' ')[0] + " " + filter?.split(' ')[1]) && Number(item.price.value) <= Number(filter?.split(' ')[2])));
+          
+        }else{
+          setFilteredData(carData.filter((item) => item.name.includes(filter?.split(' ')[0] + " " + filter?.split(' ')[1])));
+          
+        }
       }
     }
     i++;
@@ -202,7 +206,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
           ) : (
             <div className="flex flex-col gap-4">
               {filteredData.length > 0 ?(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-                {message.content?.split('Keyword')[0]}
+                {filteredMessage != "" ? filteredMessage?.split('Keyword')[0] : message.content?.split('Keyword')[0]}
               </div>):(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
                 vi har inte det för närvarande men om du anger din e-postadress i nedanstående prenumerationsformulär kan du få ett meddelande när vi har en ny bil.
               </div>)}
