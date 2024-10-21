@@ -233,12 +233,12 @@ export const ChatMessage: FC<Props> = ({ message }) => {
               ):(
                 <div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
                   {keyword ? (
-                    <p>
+                    <div>
                       vi har inte det för närvarande men om du anger din e-postadress i nedanstående prenumerationsformulär kan du få ett meddelande när vi har en ny bil.
-                    </p>
+                    </div>
 
                   ):(
-                    <p>{message.content}</p>
+                    <div>{message.content}</div>
                   )}
                 </div>
               )}
