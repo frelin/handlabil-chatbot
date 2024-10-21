@@ -14,126 +14,144 @@ interface Props {
 }
 
 export const ChatMessage: FC<Props> = ({ message }) => {
-  const [currentIndex, setCurrentIndex] = useState<number[]>([0, 0, 0]);
+  const [currentIndex, setCurrentIndex] = useState<number[]>([]);
   const [keyword, setKeyword] = useState(false);
   const [filteredData, setFilteredData] = useState<any[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState<any[]>([false,false,false]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean[]>([]);
   const [filteredMessage, setFilteredMessage] = useState<string>('');
 
   const openModal = (index: number) => {
-    const updatedModals = [...isModalOpen];
-    updatedModals[index] = true; // Open the specific modal
-    setIsModalOpen(updatedModals);
+    setIsModalOpen(prevState => {
+      const newState = [...prevState];
+      newState[index] = true;
+      return newState;
+    });
   };
 
   const closeModal = (index: number) => {
-    const updatedModals = [...isModalOpen];
-    updatedModals[index] = false; // Close the specific modal
-    setIsModalOpen(updatedModals);
+    setIsModalOpen(prevState => {
+      const newState = [...prevState];
+      newState[index] = false;
+      return newState;
+    });
   };
 
 
   useEffect(() => {
-    if (message.content?.includes('Keyword')) {
-      setKeyword(true);
-      var word = message.content?.split("Keyword: ")[1]?.replaceAll(')', '');
-      console.log("11111111111111111111111", word)
-      if(word?.includes('Under')){
-        setFilteredData(carData.filter((item) => Number(item.price.value) < Number(word?.split("Under ")[1]?.split(" ")[0])).slice(0,3));
-      }else{
-        console.log("fffffffffffffffffff", carData.filter((item) => item.name.includes(word?.split(".")[0])))
-        setFilteredData(carData.filter((item) => item.name.includes(word?.split(".")[0])));
-        console.log(`========${i}===start=============`, word);
-      }
-    }
-    if (message.content?.includes('Filter')) {
-      var filter = message.content?.split("Filter: ")[1]?.split(".")[0].replaceAll(')', '');
-      console.log("2222222222222222222222", filter)
-      if(filter?.includes('Under')){
-        setFilteredMessage(message.content.replace(' Filter: ' + filter,''));
+    if (!message.content) return;
   
-        setFilteredData(carData.filter((item) => item.name.includes(filter?.split(' ')[0] + " " + filter?.split(' ')[1]?.split(' ')[0]) && Number(item.price.value) <= Number(filter?.split('under ')[1]?.split(' ')[0])));
-        console.log("sadgsdgsdgdsg", filter?.split(' ')[0], filter?.split(' ')[1]?.split(' ')[0], filter?.split('under ')[1]?.split(' ')[0]);
-
-      }else{
-        setFilteredMessage(message.content.replace(' Filter: ' + filter,''));
-        if(filter?.split(' ')[2]){
-          setFilteredData(carData.filter((item) => item.name.includes(filter?.split(' ')[0] + " " + filter?.split(' ')[1]) && Number(item.price.value) <= Number(filter?.split(' ')[2])));
-          
-        }else{
-          setFilteredData(carData.filter((item) => item.name.includes(filter?.split(' ')[0] + " " + filter?.split(' ')[1])));
-          
+    if (message.content.includes('Filter')) {
+      const filter = message.content.split('Filter: ')[1]?.split('.')[0];
+      if (filter) {
+        setFilteredMessage(message.content.replace(` Filter: ${filter}.`, ''));
+  
+        const filterParts = filter.split(' ');
+  
+        const make = filterParts.find((item) => item.includes('make'));
+        const model = filterParts.find((item) => item.includes('model'));
+        const gear = filterParts.find((item) => item.includes('gear'));
+        const range = filterParts.find((item) => item.includes('range'));
+  
+        // Start with the full carData and apply filters sequentially.
+        let updatedFilteredData = carData;
+  
+        if (make) {
+          updatedFilteredData = updatedFilteredData.filter((item) =>
+            item.name.toLowerCase().includes(make.replace('make-', '').toLowerCase())
+          );
         }
+  
+        if (model) {
+          updatedFilteredData = updatedFilteredData.filter((item) =>
+            item.name.toLowerCase().includes(model.replace('model-', '').toLowerCase())
+          );
+        }
+  
+        if (gear) {
+          updatedFilteredData = updatedFilteredData.filter((item) =>
+            item.gearBox.toLowerCase().includes(gear.replace('gear-', '').toLowerCase())
+          );
+        }
+  
+        if (range) {
+          const [minPrice, maxPrice] = range.split('-').slice(1).map(Number);
+          updatedFilteredData = updatedFilteredData.filter(
+            (item) =>
+              Number(item.price.value) >= minPrice &&
+              Number(item.price.value) <= maxPrice
+          );
+        }
+  
+        setFilteredData(updatedFilteredData);
       }
     }
-    i++;
   }, [message.content]);
 
-  // Function to go to the next image
-  const nextImage = (imageUrls: [], index: number) => {
+  useEffect(() => {
+    const newIndices = Array(filteredData.length).fill(0);
+    setCurrentIndex(newIndices);
+    setIsModalOpen(Array(filteredData.length).fill(false));
+  }, [filteredData]);
+
+  const nextImage = (imageUrls: any[], index: number) => {
     setCurrentIndex(prevIndex => {
-      let newIndex = [...prevIndex]
-      newIndex[index] = (newIndex[index] + 1) % imageUrls.length
+      let newIndex = [...prevIndex];
+      newIndex[index] = (newIndex[index] + 1) % imageUrls.length;
+      return newIndex;
+    });
+  };
 
-      return [...newIndex]
-    })
-  }
-
-  // Function to go to the previous image
-  const prevImage = (imageUrls: [], index: number) => {
+  const prevImage = (imageUrls: any[], index: number) => {
     setCurrentIndex(prevIndex => {
-      let newIndex = [...prevIndex]
-      newIndex[index] = (newIndex[index] - 1 + imageUrls.length) % imageUrls.length
-
-      return [...newIndex]
-    })
+      let newIndex = [...prevIndex];
+      newIndex[index] = (newIndex[index] - 1 + imageUrls.length) % imageUrls.length;
+      return newIndex;
+    });
   };
 
   // Render image slider and message content
-  const renderMessageContent = (content: string) => {
+  const renderMessageContent = () => {
     if (filteredData.length > 0) {
       return (
-        <div className='flex flex-col gap-y-2 xl:gap-y-0 xl:flex-row'>
-          {filteredData.slice(0, 3).map((item, index) => (
+        <div className='flex flex-row gap-2 xl:gap-2 xl:flex-row flex-wrap'>
+          {filteredData.map((item, index) => (
             <div
             key={index}>
-              <PriceCalculatorModal isOpen={isModalOpen[index]} onClose={()=>closeModal(index)} data={item} />
-              <div
-                className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 whitespace-pre-wrap mx-2 relative"
-                style={{ overflowWrap: "anywhere" }}>
-                <div className="my-2 w-full">
-                  {/* Image slider */}
-                  <div className="relative w-full max-w-[100%] h-[200px] overflow-hidden">
-                    {/* Clickable image */}
-                    <a
-                      className="flex justify-center"
-                      href={item.images[currentIndex[index]]?.imageFormats[0].url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Image
-                        src={item.images[currentIndex[index]]?.imageFormats[0].url}
-                        alt={`Image ${currentIndex[index]}`}
-                        width="300"
-                        height="200"
-                        style={{ borderRadius: '8px' }}
-                        priority
-                      />
-                    </a>
+            <PriceCalculatorModal isOpen={isModalOpen[index]} onClose={() => closeModal(index)} data={item} />
+            <div className="flex items-center w-[350px] bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 whitespace-pre-wrap relative"
+                 style={{ overflowWrap: "anywhere" }}>
+              <div className="my-2 w-full">
+                {/* Image slider */}
+                <div className="relative w-full max-w-[100%] h-[200px] overflow-hidden">
+                  <a
+                    className="flex justify-center"
+                    href={item.images[currentIndex[index]]?.imageFormats[0].url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      src={item.images[currentIndex[index]]?.imageFormats[0].url}
+                      alt={`Image ${currentIndex[index]}`}
+                      width="300"
+                      height="200"
+                      style={{ borderRadius: '8px' }}
+                      priority
+                    />
+                  </a>
 
-                    {/* Navigation buttons */}
-                    <button
-                      onClick={() => prevImage(item.images, index)}
-                      className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white text-black px-2 py-1 rounded"
-                    >
-                      ‹
-                    </button>
-                    <button
-                      onClick={() => nextImage(item.images, index)}
-                      className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white text-black px-2 py-1 rounded"
-                    >
-                      ›
-                    </button>
+                  {/* Navigation buttons */}
+                  <button
+                    onClick={() => prevImage(item.images, index)}
+                    className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-white text-black px-2 py-1 rounded"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    onClick={() => nextImage(item.images, index)}
+                    className="absolute top-1/2 right-0 transform -translate-y-1/2 bg-white text-black px-2 py-1 rounded"
+                  >
+                    ›
+                  </button>
                   </div>
 
                   {/* Text content below the slider */}
@@ -173,7 +191,11 @@ export const ChatMessage: FC<Props> = ({ message }) => {
                       >Kalkylator</a>
                     <a
                       className="flex justify-center"
-                      href={item.images[currentIndex[index]]?.imageFormats[0].url}
+                      href={"https://www.handlabil.se/handlabil/" + 
+                        item.modelYear + "-" +
+                      item.name.replace(/\s+/g, '-').replace(".", '-').toLowerCase() + "-" +
+                      item.regNo.toLowerCase() + "-" +
+                      item.id}
                       target="_blank"
                       rel="noopener noreferrer"
                     >Gå till Annonser</a>
@@ -187,45 +209,38 @@ export const ChatMessage: FC<Props> = ({ message }) => {
     }
   };
 
-  return (<div>
-
+  return (
+  <div>
     <div className={`flex flex-col ${message.role === "assistant" ? "items-start" : "items-end"}`}>
-
-    {message.role === "assistant" ? (
-      <div className="flex flex-row items-start">
-        <div className="mr-2">
-          <div className="bg-neutral-200 rounded-full w-12 h-12 flex items-center justify-center">
-            <Image src={Robot} alt="Robot" className="w-12 h-12 rounded-full" />
+      {message.role === "assistant" ? (
+        <div className="flex flex-row items-start">
+          <div className="mr-1">
+            <div className="bg-neutral-200 rounded-full w-8 h-8 flex items-center justify-center">
+              <Image src={Robot} alt="Robot" className="w-8 h-8 rounded-full" />
+            </div>
+          </div>
+          <div className="flex flex-col mr-2">
+              {filteredData.length > 0 ?(
+                <div className="flex flex-col gap-4">
+                  {message.content?.split('Keyword')[0] != "" && (
+                    <div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
+                      {filteredMessage != "" ? filteredMessage?.split('Keyword')[0] : message.content?.split('Keyword')[0]}
+                    </div>
+                  )}
+                  {renderMessageContent()}
+                </div>
+              ):(
+                <div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
+                  vi har inte det för närvarande men om du anger din e-postadress i nedanstående prenumerationsformulär kan du få ett meddelande när vi har en ny bil.
+                </div>
+              )}
           </div>
         </div>
-        <div className="flex flex-col gap-4 mr-2">
-          {!keyword ? (
-            <div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-              {filteredMessage ? filteredMessage : message.content}
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              {filteredData.length > 0 ?(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-                {filteredMessage != "" ? filteredMessage?.split('Keyword')[0] : message.content?.split('Keyword')[0]}
-              </div>):(<div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-                vi har inte det för närvarande men om du anger din e-postadress i nedanstående prenumerationsformulär kan du få ett meddelande när vi har en ny bil.
-              </div>)}
-              {renderMessageContent(message.content)}
-            </div>
-          )}
-
-          {filteredMessage != '' &&(
-            <div className="flex flex-col gap-4">
-              {renderMessageContent(message.content)}
-            </div>
-          )}
-          </div>
-      </div>
-    ) : (
-      <div className="flex items-center bg-[#008d7f] text-white rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
-        {message.content}
-      </div>
-    )}
+      ) : (
+        <div className="flex items-center bg-[#008d7f] text-white rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
+          {message.content}
+        </div>
+      )}
     </div>
   </div>
   );
