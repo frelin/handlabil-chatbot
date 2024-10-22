@@ -14,7 +14,7 @@ interface Props {
 
 export const Chat: FC<Props> = ({ messages, loading, onSend, onReset }) => {
   return (
-    <>
+    <div className="mb-28">
       <div className="flex flex-row justify-between items-center mb-4 sm:mb-8">
         <ResetChat onReset={onReset} />
       </div>
@@ -34,11 +34,13 @@ export const Chat: FC<Props> = ({ messages, loading, onSend, onReset }) => {
             <ChatLoader />
           </div>
         )}
+      </div>
 
-        <div className="mt-4 sm:mt-8 bottom-[70px] left-0 w-full fixed">
+      <div className="mt-4 sm:mt-8 bottom-[80px] left-0 w-full fixed">
+        <div className="w-full md:max-w-8xl container mx-auto max-md:px-5">
           <ChatInput onSend={onSend} />
         </div>
       </div>
-    </>
+    </div>
   );
 };

@@ -114,12 +114,12 @@ export const ChatMessage: FC<Props> = ({ message }) => {
   const renderMessageContent = () => {
     if (filteredData.length > 0) {
       return (
-        <div className='flex flex-row gap-2 xl:gap-2 xl:flex-row flex-wrap'>
+        <div className='flex flex-row gap-2 flex-wrap'>
           {filteredData.map((item, index) => (
             <div
             key={index}>
             <PriceCalculatorModal isOpen={isModalOpen[index]} onClose={() => closeModal(index)} data={item} />
-            <div className="flex items-center w-[350px] bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 whitespace-pre-wrap relative"
+            <div className="flex items-center w-[20rem] bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 whitespace-pre-wrap relative"
                  style={{ overflowWrap: "anywhere" }}>
               <div className="my-2 w-full">
                 {/* Image slider */}
@@ -156,19 +156,19 @@ export const ChatMessage: FC<Props> = ({ message }) => {
                   </div>
 
                   {/* Text content below the slider */}
-                  <div className="mt-4 p-4 bg-white shadow-md rounded-lg">
+                  <div className="mt-4 p-4 bg-white shadow-md rounded-lg min-h-[22rem]">
                     <h2 className="text-3xl font-bold text-gray-800">{item.make} {item.model}</h2>
                     <p className="text-lg text-gray-600">{item.name}</p>
                     
-                    <div className="flex flex-col md:flex-row items-start md:items-center text-gray-500 mt-2">
+                    <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center text-gray-500 mt-2">
                       <span className="mr-3 flex items-center">
-                        <span className="mr-1">🚗</span>{item.modelYear}
+                        <span className="mr-1 min-w-[1.37rem]">🚗</span>{item.modelYear}
                       </span>
                       <span className="mr-3 flex items-center">
-                        <span className="mr-1">📏</span>{item.milage}
+                        <span className="mr-1 min-w-[1.37rem]">📏</span>{item.milage}
                       </span>
                       <span className="flex items-center">
-                        <span className="mr-1">⛽</span>{item.fuel}
+                        <span className="mr-1 min-w-[1.37rem]">⛽</span>{item.fuel}
                       </span>
                     </div>
 
@@ -183,7 +183,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
                       {item.price.value} kr
                     </h1>
                   </div>
-                  <div className="flex flex-row items-center justify-between gap-8 mt-4 py-4 px-10 bg-white shadow-md rounded-lg">
+                  <div className="flex flex-row items-center justify-between mt-4 py-4 px-10 bg-white shadow-md rounded-lg">
                     <a
                         className="flex justify-center hover:cursor-pointer"
                         onClick={()=>openModal(index)}

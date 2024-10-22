@@ -35,7 +35,7 @@ export const Footer: FC = () => {
   };
 
   return (
-  <div className="flex flex-row h-[80px] border-t border-neutral-300 py-2 px-8 items-center sm:justify-between justify-center">
+  <div className="fixed w-full bottom-0 z-10 bg-white flex flex-row h-[80px] border-t border-neutral-300 py-2 px-8 items-center sm:justify-between justify-center">
     <div className="mx-auto p-4 bg-white shadow-lg rounded-lg">
       <form onSubmit={handleSubmit} className="flex items-center space-x-2">
         <input

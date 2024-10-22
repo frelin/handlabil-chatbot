@@ -118,11 +118,11 @@ export default function Home() {
         />
       </Head>
 
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col">
         <Navbar />
 
-        <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10 relative bg-[#fdfdfd]">
-          <div className="w-full md:max-w-8xl container mx-auto mt-4 sm:mt-12 relative z-10">
+        <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10 mt-[3.75rem] relative bg-[#fdfdfd]">
+          <div className="w-full md:max-w-8xl container mx-auto mt-4 sm:mt-12 relative">
             <Chat
               messages={messages}
               loading={loading}
