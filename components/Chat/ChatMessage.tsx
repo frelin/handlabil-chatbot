@@ -125,7 +125,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         const plugin_hybrid = filterParts.find((item) => item.includes('plugin-hybrid'));
 
         localStorage.clear();
-        localStorage.setItem("savedCar", `${make?.replace('make-', '')} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${range? range: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat: ''} ${dragkrok? dragkrok: ''} ${size_small? size_small: ''}  ${size_big? size_big: ''}  ${size_pickup? size_pickup: ''}  ${size_van? size_van: ''}  ${fuel_el? fuel_el: ''}  ${fuel_bensin? fuel_bensin: ''} ${fuel_diesel? fuel_diesel: ''}  ${fuel_hybrid? fuel_hybrid: ''} ${plugin_hybrid? plugin_hybrid: ''} `)
+        localStorage.setItem("savedCar", `${make? make.replace('make-', ''): ''} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${range? range: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat: ''} ${dragkrok? dragkrok: ''} ${size_small? size_small: ''}  ${size_big? size_big: ''}  ${size_pickup? size_pickup: ''}  ${size_van? size_van: ''}  ${fuel_el? fuel_el: ''}  ${fuel_bensin? fuel_bensin: ''} ${fuel_diesel? fuel_diesel: ''}  ${fuel_hybrid? fuel_hybrid: ''} ${plugin_hybrid? plugin_hybrid: ''} `)
 
         let updatedFilteredData = carData;
 
