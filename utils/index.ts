@@ -46,8 +46,26 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Nej, vi tar bara emot provkörning förfrågningar över telefon eller mail. Vill du att en säljare kontaktar dig för att boka in en provkörnin? 
         Q: Är era bilar testade? 
         A: Ja, vi testar alla våra bilar innan uppläggning. Samtliga bilar går även igenom en bilbesiktning av extern part. 
-        Q: Jag söker en 7 sitsig bil 
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: seat-7.
+        Q: Jag söker en 7 sitsig bil. 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: seat-7. 
+        Q: Kan du rekommendera en liten bil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: size-small. 
+        Q: Kan du rekommendera en stor bil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: size-big. 
+        Q: Kan du rekommendera en pickupbil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: size-pickup. 
+        Q: Kan du rekommendera en skåpbil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: size-van. 
+        Q: Kan du rekommendera en elbil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-el.
+        Q: Kan du rekommendera en bensinbil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-bensin.
+        Q: Kan du rekommendera en dieselbil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-diesel.
+        Q: Kan du rekommendera en Drivmedel Hybridbil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-hybrid.
+        Q: Kan du rekommendera en laddhybridbil? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: plugin-hybrid.
         Q: Kan du rekommendera en bil med dragkrok? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: dragkrok-true.
         Q: Jag söker efter en billig pendlarbil, vad kan ni rekommendera?
@@ -57,7 +75,7 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         Q: här är min e-postadress example@domain.com 
         A: Tack. din e-post registrerades framgångsrikt. vår personal kommer att kontakta dig inom kort och du kommer att få info angående ny bil. EmailID: example@domain.com 
         Q: det här är mitt telefonnummer 123 456 7890 
-        A: Tack. vi har fått ditt nummer. låt oss höra av oss snart. PhoneNumber: '1234567890' 
+        A: Tack, en säljare ringer upp dig inom kort. PhoneNumber: '1234567890' 
         Q: kan du rekommendera en bil med automatlåda och fyrhjulsdrift och max körsträcka på 12000mil. 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: milage_range-0-12000 fourwheel-true gear-automatisk. 
         Q: Kan du rekommendera en tesla model y med automatlåda? 

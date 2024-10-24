@@ -103,6 +103,9 @@ export default function Home() {
     ]);
   };
 
+  const finishReset = () => {
+    setFinished(false);
+  };
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -144,6 +147,7 @@ export default function Home() {
               loading={loading}
               carData={carData}
               finished={finished}
+              reset={finishReset}
               onSend={handleSend}
               onReset={handleReset}
             />

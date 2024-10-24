@@ -10,9 +10,10 @@ interface Props {
   message: Message;
   carData: any[];
   finished: boolean;
+  reset: () => void;
 }
 
-export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
+export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) => {
   const [currentIndex, setCurrentIndex] = useState<number[]>([]);
   const [keyword, setKeyword] = useState(false);
   const [filteredData, setFilteredData] = useState<any[]>([]);
@@ -35,7 +36,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
         'service_qhhhy6g',
         'template_mpr8116',
         {
-          message: `car - ${saved_car} ${email != '' ? email:''}`,
+          message: `car - ${saved_car} ${email != '' ? 'E-Post: ' + email:''}`,
         },
         'A4ybXJWi9VVjLhE5L'
       )
@@ -59,7 +60,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
         'service_qhhhy6g',
         'template_mpr8116',
         {
-          message: `car - ${saved_car} ${phone != '' ? phone:''}`,
+          message: `car - ${saved_car} ${phone != '' ? 'Telefon: ' + phone:''}`,
         },
         'A4ybXJWi9VVjLhE5L'
       )
@@ -113,6 +114,15 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
         const fuel_range = filterParts.find((item) => item.includes('fuel_range'));
         const seat = filterParts.find((item) => item.includes('seat'));
         const dragkrok = filterParts.find((item) => item.includes('dragkrok'));
+        const size_small = filterParts.find((item) => item.includes('size-small'));
+        const size_big = filterParts.find((item) => item.includes('size-big'));
+        const size_pickup = filterParts.find((item) => item.includes('size-pickup'));
+        const size_van = filterParts.find((item) => item.includes('size-van'));
+        const fuel_el = filterParts.find((item) => item.includes('fuel-el'));
+        const fuel_bensin = filterParts.find((item) => item.includes('fuel-bensin'));
+        const fuel_diesel = filterParts.find((item) => item.includes('fuel-diesel'));
+        const fuel_hybrid = filterParts.find((item) => item.includes('fuel-hybrid'));
+        const plugin_hybrid = filterParts.find((item) => item.includes('plugin-hybrid'));
 
         localStorage.clear();
         localStorage.setItem(
@@ -124,7 +134,16 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
           ${milage_range? milage_range: ''} 
           ${fuel_range? fuel_range: ''}
           ${seat? seat.replace('seat-', ''): ''}
-          ${dragkrok? dragkrok.replace('dragkrok-', ''): ''} `)
+          ${dragkrok? dragkrok.replace('dragkrok-', ''): ''} 
+          ${size_small? size_small.replace('size-', ''): ''} 
+          ${size_big? size_big.replace('size-', ''): ''} 
+          ${size_pickup? size_pickup.replace('size-', ''): ''} 
+          ${size_van? size_van.replace('size-', ''): ''} 
+          ${fuel_el? fuel_el.replace('fuel-', ''): ''} 
+          ${fuel_bensin? fuel_bensin.replace('fuel-', ''): ''} 
+          ${fuel_diesel? fuel_diesel.replace('fuel-', ''): ''} 
+          ${fuel_hybrid? fuel_hybrid.replace('fuel-', ''): ''} 
+          ${plugin_hybrid? plugin_hybrid.replace('plugin-', ''): ''} `)
 
         let updatedFilteredData = carData;
 
@@ -158,6 +177,60 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
             item.equipment.indexOf('Dragkrok') > -1
           );
           console.log("sdgfdsfdsf", updatedFilteredData);
+        }
+
+        if (size_small && size_small.replace('size-', '').toLowerCase() === 'small') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.bodyType === "Halvkombi"
+          );
+        }
+
+        if (size_big && size_big.replace('size-', '').toLowerCase() === 'big') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.bodyType?.toLowerCase().includes("Kombi") || item.bodyType?.toLowerCase().includes("suv")
+          );
+        }
+
+        if (size_pickup && size_pickup.replace('size-', '').toLowerCase() === 'pickup') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.bodyType === "Transportbil - Flak"
+          );
+        }
+
+        if (size_van && size_van.replace('size-', '').toLowerCase() === 'van') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.bodyType === "Transportbil - Skåp"
+          );
+        }
+
+        if (fuel_el && fuel_el.replace('fuel-', '').toLowerCase() === 'el') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.fuel?.toLowerCase() === "el"
+          );
+        }
+
+        if (fuel_bensin && fuel_bensin.replace('fuel-', '').toLowerCase() === 'bensin') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.fuel?.toLowerCase() === "bensin"
+          );
+        }
+
+        if (fuel_diesel && fuel_diesel.replace('fuel-', '').toLowerCase() === 'diesel') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.fuel?.toLowerCase() === "diesel"
+          );
+        }
+
+        if (fuel_hybrid && fuel_hybrid.replace('fuel-', '').toLowerCase() === 'hybrid') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.fuel?.toLowerCase() === "hybrid el/bensin"
+          );
+        }
+
+        if (plugin_hybrid && plugin_hybrid.replace('plugin-', '').toLowerCase() === 'hybrid') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.description?.toLowerCase().includes("plug-in hybrid")
+          );
         }
         if (seat) {
           updatedFilteredData = updatedFilteredData?.filter((item) =>
@@ -207,15 +280,20 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
     if(message.content.includes('EmailID') && finished) {
       const filter = message.content.split('EmailID: ')[1];
       setChatMessage(message.content.replace(`EmailID: ${filter}`, ''));
-      sendEmailData(filter);
+      if(filter){sendEmailData(filter);}
       
     }
 
+    console.log("finished",finished);
     if(message.content.includes('PhoneNumber') && finished) {
       const filter = message.content.split('PhoneNumber: ')[1];
       setChatMessage(message.content.replace(`PhoneNumber: ${filter}`, ''));
-      sendPhoneData(filter);
+      if(filter){
+        sendPhoneData(filter);
+      }
     }
+    reset();
+    console.log("finishedaaaaaaaaaaaaaa",finished);
   }, [message.content]);
 
   useEffect(() => {
