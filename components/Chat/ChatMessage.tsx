@@ -125,25 +125,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         const plugin_hybrid = filterParts.find((item) => item.includes('plugin-hybrid'));
 
         localStorage.clear();
-        localStorage.setItem(
-          "savedCar", `${make?.replace('make-', '')} 
-          ${model? model.replace('model-', ''):''} 
-          ${gear? gear.replace('gear-', ''): ''} 
-          ${range? range: ''} 
-          ${fourwheel? fourwheel : ''} 
-          ${milage_range? milage_range: ''} 
-          ${fuel_range? fuel_range: ''}
-          ${seat? seat.replace('seat-', ''): ''}
-          ${dragkrok? dragkrok.replace('dragkrok-', ''): ''} 
-          ${size_small? size_small.replace('size-', ''): ''} 
-          ${size_big? size_big.replace('size-', ''): ''} 
-          ${size_pickup? size_pickup.replace('size-', ''): ''} 
-          ${size_van? size_van.replace('size-', ''): ''} 
-          ${fuel_el? fuel_el.replace('fuel-', ''): ''} 
-          ${fuel_bensin? fuel_bensin.replace('fuel-', ''): ''} 
-          ${fuel_diesel? fuel_diesel.replace('fuel-', ''): ''} 
-          ${fuel_hybrid? fuel_hybrid.replace('fuel-', ''): ''} 
-          ${plugin_hybrid? plugin_hybrid.replace('plugin-', ''): ''} `)
+        localStorage.setItem("savedCar", `${make?.replace('make-', '')} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${range? range: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat.replace('seat-', ''): ''} ${dragkrok? dragkrok.replace('dragkrok-', ''): ''} ${size_small? size_small.replace('size-', ''): ''}  ${size_big? size_big.replace('size-', ''): ''}  ${size_pickup? size_pickup.replace('size-', ''): ''}  ${size_van? size_van.replace('size-', ''): ''}  ${fuel_el? fuel_el.replace('fuel-', ''): ''}  ${fuel_bensin? fuel_bensin.replace('fuel-', ''): ''} ${fuel_diesel? fuel_diesel.replace('fuel-', ''): ''}  ${fuel_hybrid? fuel_hybrid.replace('fuel-', ''): ''} ${plugin_hybrid? plugin_hybrid.replace('plugin-', ''): ''} `)
 
         let updatedFilteredData = carData;
 
