@@ -7,12 +7,14 @@ import { ResetChat } from "./ResetChat";
 
 interface Props {
   messages: Message[];
+  carData: any[];
   loading: boolean;
+  finished: boolean;
   onSend: (message: Message) => void;
   onReset: () => void;
 }
 
-export const Chat: FC<Props> = ({ messages, loading, onSend, onReset }) => {
+export const Chat: FC<Props> = ({ messages, carData, loading, finished, onSend, onReset }) => {
   return (
     <div className="mb-28">
       <div className="flex flex-row justify-between items-center mb-4 sm:mb-8">
@@ -25,7 +27,7 @@ export const Chat: FC<Props> = ({ messages, loading, onSend, onReset }) => {
             key={index}
             className="my-1 sm:my-1.5"
           >
-            <ChatMessage message={message} />
+            <ChatMessage message={message} carData={carData} finished={finished} />
           </div>
         ))}
 

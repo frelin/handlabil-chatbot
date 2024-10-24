@@ -2,23 +2,78 @@ import { Message } from "@/types";
 import { FC, useState, useEffect } from "react";
 import Robot from '../../public/robot.jpg';
 import Image from "next/image";
-import carData from '../../public/handlabil.json';
 import PriceCalculatorModal from './PriceCalculatorModal';
+import LoadingModal from './LoadingModal';
+import emailjs from 'emailjs-com';
 
-let i = 0
-// Regex to detect image URLs
 const imageUrlPattern = /https?:\/\/[^\s]+/g;
 
 interface Props {
   message: Message;
+  carData: any[];
+  finished: boolean;
 }
 
-export const ChatMessage: FC<Props> = ({ message }) => {
+export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
   const [currentIndex, setCurrentIndex] = useState<number[]>([]);
   const [keyword, setKeyword] = useState(false);
   const [filteredData, setFilteredData] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean[]>([]);
   const [filteredMessage, setFilteredMessage] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(()=>{
+    if(carData.length > 0){
+      setLoading(false);
+    }else{
+      setLoading(true);
+    }
+  },[carData])
+  const sendEmailData = (email: string) => {
+    var saved_car = localStorage.getItem("savedCar");
+    if(email){emailjs
+      .send(
+        'service_qhhhy6g',
+        'template_mpr8116',
+        {
+          message: `car - ${saved_car} ${email != '' ? email:''}`,
+        },
+        'A4ybXJWi9VVjLhE5L'
+      )
+      .then(
+        () => {
+          console.log('sent email');
+        },
+        (error) => {
+          console.error('Failed to send email:', error);
+        }
+      );}
+  };
+  const loaded = () => {
+    setLoading(false);
+  }
+
+  const sendPhoneData = (phone: string) => {
+    var saved_car = localStorage.getItem("savedCar");
+    if(phone){emailjs
+      .send(
+        'service_qhhhy6g',
+        'template_mpr8116',
+        {
+          message: `car - ${saved_car} ${phone != '' ? phone:''}`,
+        },
+        'A4ybXJWi9VVjLhE5L'
+      )
+      .then(
+        () => {
+          console.log('sent email');
+        },
+        (error) => {
+          console.error('Failed to send email:', error);
+        }
+      );}
+  };
+  
 
   const openModal = (index: number) => {
     setIsModalOpen(prevState => {
@@ -39,52 +94,110 @@ export const ChatMessage: FC<Props> = ({ message }) => {
 
   useEffect(() => {
     if (!message.content) return;
-  
+
     if (message.content.includes('Filter')) {
       setKeyword(true);
       const filter = message.content.split('Filter: ')[1]?.split('.')[0];
+      console.log("=======message========", filter);
       if (filter) {
         setFilteredMessage(message.content.replace(` Filter: ${filter}.`, ''));
-  
+
         const filterParts = filter.split(' ');
-  
+
         const make = filterParts.find((item) => item.includes('make'));
         const model = filterParts.find((item) => item.includes('model'));
         const gear = filterParts.find((item) => item.includes('gear'));
-        const range = filterParts.find((item) => item.includes('range'));
-  
-        // Start with the full carData and apply filters sequentially.
+        const range = filterParts.find((item) => item.includes('price_range'));
+        const fourwheel = filterParts.find((item) => item.includes('fourwheel'));
+        const milage_range = filterParts.find((item) => item.includes('milage_range'));
+        const fuel_range = filterParts.find((item) => item.includes('fuel_range'));
+        const seat = filterParts.find((item) => item.includes('seat'));
+
+        localStorage.setItem(
+          "savedCar", `${make?.replace('make-', '')} 
+          ${model? model.replace('model-', ''):''} 
+          ${gear? gear.replace('gear-', ''): ''} 
+          ${range? 'pris: ' + range: ''} 
+          ${fourwheel? fourwheel : ''} 
+          ${milage_range? milage_range: ''} 
+          ${fuel_range? fuel_range: ''}
+          ${seat? seat.replace('seat-', ''): ''} `)
+
         let updatedFilteredData = carData;
-  
+
         if (make) {
-          updatedFilteredData = updatedFilteredData.filter((item) =>
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
             item.name.toLowerCase().includes(make.replace('make-', '').toLowerCase())
           );
         }
-  
+
         if (model) {
-          updatedFilteredData = updatedFilteredData.filter((item) =>
-            item.name.toLowerCase().includes(model.replace('model-', '').toLowerCase())
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.name.replace(/\s+/g, '-').toLowerCase().includes(model.replace('model-', '').toLowerCase())
           );
         }
-  
+
         if (gear) {
-          updatedFilteredData = updatedFilteredData.filter((item) =>
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
             item.gearBox.toLowerCase().includes(gear.replace('gear-', '').toLowerCase())
           );
         }
-  
+
+        if (fourwheel && fourwheel.replace('fourwheel-', '').toLowerCase() === 'true') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.additionalVehicleData?.fourWheelDrive === true
+          );
+        }
+
+        if (seat) {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.additionalVehicleData.noPassangers >= Number(seat.replace('seat-', ''))
+          );
+        }
+
         if (range) {
           const [minPrice, maxPrice] = range.split('-').slice(1).map(Number);
-          updatedFilteredData = updatedFilteredData.filter(
+          updatedFilteredData = updatedFilteredData?.filter(
             (item) =>
               Number(item.price.value) >= minPrice &&
               Number(item.price.value) <= maxPrice
           );
         }
-  
+
+        if (milage_range) {
+          const [minMile, maxMile] = milage_range.split('-').slice(1).map(Number);
+          updatedFilteredData = updatedFilteredData?.filter(
+            (item) =>
+              Number(item.milage) >= minMile &&
+              Number(item.milage) <= maxMile
+          );
+        }
+
+        
+        if (fuel_range) {
+          const [minFuel, maxFuel] = fuel_range.split('-').slice(1).map(Number);
+          updatedFilteredData = updatedFilteredData?.filter(
+            (item) =>
+              Number(item.fuels.consumption) >= minFuel &&
+              Number(item.fuels.consumption) <= maxFuel
+          );
+        }
+
         setFilteredData(updatedFilteredData);
       }
+    }
+
+    if(message.content.includes('EmailID') && finished) {
+      const filter = message.content.split('EmailID: ')[1];
+      setFilteredMessage(message.content.replace(` EmailID: ${filter}`, ''));
+      sendEmailData(filter);
+      
+    }
+
+    if(message.content.includes('PhoneNumber') && finished) {
+      const filter = message.content.split('PhoneNumber: ')[1];
+      setFilteredMessage(message.content.replace(` PhoneNumber: ${filter}`, ''));
+      sendPhoneData(filter);
     }
   }, [message.content]);
 
@@ -93,6 +206,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
     setCurrentIndex(newIndices);
     setIsModalOpen(Array(filteredData.length).fill(false));
   }, [filteredData]);
+
 
   const nextImage = (imageUrls: any[], index: number) => {
     setCurrentIndex(prevIndex => {
@@ -115,7 +229,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
     if (filteredData.length > 0) {
       return (
         <div className='flex flex-row gap-2 flex-wrap'>
-          {filteredData.map((item, index) => (
+          {filteredData.slice(0,100).map((item, index) => (
             <div
             key={index}>
             <PriceCalculatorModal isOpen={isModalOpen[index]} onClose={() => closeModal(index)} data={item} />
@@ -130,14 +244,17 @@ export const ChatMessage: FC<Props> = ({ message }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Image
-                      src={item.images[currentIndex[index]]?.imageFormats[0].url}
-                      alt={`Image ${currentIndex[index]}`}
-                      width="300"
-                      height="200"
-                      style={{ borderRadius: '8px' }}
-                      priority
-                    />
+                    { 
+                      item.images[currentIndex[index]]?.imageFormats[0].url &&
+                      <Image
+                        src={item.images[currentIndex[index]]?.imageFormats[0].url}
+                        alt={`Image ${currentIndex[index]}`}
+                        width="300"
+                        height="200"
+                        style={{ borderRadius: '8px' }}
+                        priority
+                      />
+                    }
                   </a>
 
                   {/* Navigation buttons */}
@@ -212,6 +329,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
 
   return (
   <div>
+    <LoadingModal isOpen={loading} onClose={() => loaded()} />
     <div className={`flex flex-col ${message.role === "assistant" ? "items-start" : "items-end"}`}>
       {message.role === "assistant" ? (
         <div className="flex flex-row items-start">
@@ -234,7 +352,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
                 <div className="flex items-center bg-neutral-200 text-neutral-900 rounded-2xl px-3 py-2 max-w-[67%] whitespace-pre-wrap" style={{ overflowWrap: "anywhere" }}>
                   {keyword ? (
                     <div>
-                      vi har inte det för närvarande men om du anger din e-postadress i nedanstående prenumerationsformulär kan du få ett meddelande när vi har en ny bil.
+                      vi har för närvarande ingen bil du vill ha men om du anger din e-postadress kan vi kontakta din e-post när vi har en ny bil.
                     </div>
 
                   ):(

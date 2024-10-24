@@ -10,7 +10,18 @@ import carImage from '../public/car5.png';
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [carData, setCarData] = useState<any[]>([]);
+  const [finished, setFinished] = useState<boolean>(false);
 
+  useEffect(() => {
+    const fetchCarData = async () => {
+      const res = await fetch(`/api/carData`);
+      const data = await res.json();
+      setCarData(data);
+    };
+
+    fetchCarData();
+  }, []);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -37,7 +48,7 @@ export default function Home() {
       setLoading(false);
       throw new Error(response.statusText);
     }
-
+    
     const data = response.body;
 
     if (!data) {
@@ -54,7 +65,12 @@ export default function Home() {
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
-      const chunkValue = decoder.decode(value);
+      let chunkValue = decoder.decode(value);
+
+      if(chunkValue.includes("[DONE]")){
+        setFinished(true);
+        chunkValue = chunkValue.replace('[DONE]', '');
+      }
 
       if (isFirst) {
         isFirst = false;
@@ -126,6 +142,8 @@ export default function Home() {
             <Chat
               messages={messages}
               loading={loading}
+              carData={carData}
+              finished={finished}
               onSend={handleSend}
               onReset={handleReset}
             />
