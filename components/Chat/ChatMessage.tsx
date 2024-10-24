@@ -179,11 +179,9 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         }
 
         if (dragkrok && dragkrok.replace('dragkrok-', '').toLowerCase() === 'true') {
-          console.log("sdgfdsfdsf", dragkrok);
           updatedFilteredData = updatedFilteredData?.filter((item) =>
             item.equipment.indexOf('Dragkrok') > -1
           );
-          console.log("sdgfdsfdsf", updatedFilteredData);
         }
 
         if (size_small && size_small.replace('size-', '').toLowerCase() === 'small') {
@@ -339,7 +337,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
       }
     }
 
-    console.log("finished",finished);
+    console.log(finished);
     if(message.content.includes('PhoneNumber') && finished) {
       const filter = message.content.split('PhoneNumber: ')[1];
       setChatMessage(message.content.replace(`PhoneNumber: ${filter}`, ''));
@@ -348,7 +346,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
       }
     }
     reset();
-    console.log("finishedaaaaaaaaaaaaaa",finished);
+    console.log(finished);
   }, [message.content]);
 
   useEffect(() => {

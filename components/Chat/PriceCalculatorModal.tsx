@@ -17,7 +17,6 @@ const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onC
   useEffect(()=>{
     let monthlyInterest = interestRate/12/100;
     let temp = price*0.8 * (monthlyInterest / (1 - Math.pow((1 + monthlyInterest), -amortizationPeriod)));
-    console.log("ssssssssssssss", (1 + monthlyInterest)^amortizationPeriod)
     setMonthlyValue(temp);
   },[interestRate, amortizationPeriod])
 
