@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PriceCalculatorModalProps {
   isOpen: boolean;
@@ -7,15 +7,21 @@ interface PriceCalculatorModalProps {
 }
 
 const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onClose, data }) => {
-  const [financingType, setFinancingType] = useState<'Avbetalning' | 'Leasing'>('Avbetalning');
   const [price, setPrice] = useState<number | 0>(Number(data.price.value));
   const [downPayment, setDownPayment] = useState<number | 0>(Number(data.price.value)*0.2);
   const [interestRate, setInterestRate] = useState<number | 0>(8.49);
-  const [amortizationPeriod, setAmortizationPeriod] = useState<number | ''>(84);
+  const [amortizationPeriod, setAmortizationPeriod] = useState<number | 0>(84);
   const [residualValue, setResidualValue] = useState<number | 0>(0);
+  const [monthlyValue, setMonthlyValue] = useState<number | 0>(0);
+
+  useEffect(()=>{
+    let monthlyInterest = interestRate/12/100;
+    let temp = price*0.8 * (monthlyInterest / (1 - Math.pow((1 + monthlyInterest), -amortizationPeriod)));
+    console.log("ssssssssssssss", (1 + monthlyInterest)^amortizationPeriod)
+    setMonthlyValue(temp);
+  },[interestRate, amortizationPeriod])
 
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="fixed inset-0 bg-black opacity-50" onClick={onClose}></div>
@@ -24,8 +30,8 @@ const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onC
           <h2 className="text-xl font-semibold mb-4">Kalkylator ({data.make} {data.model})</h2>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Finansieringstyp</label>
-            <div className="flex space-x-4">
+            <label className="block text-sm font-medium mb-2">Finansieringstyp - Avbetalning</label>
+            {/* <div className="flex space-x-4">
               <label>
                 <input
                   type="radio"
@@ -46,7 +52,7 @@ const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onC
                 />
                 Leasing
               </label>
-            </div>
+            </div> */}
           </div>
 
           <div className="mb-4">
@@ -54,9 +60,9 @@ const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onC
             <input
               type="number"
               value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
               className="border border-gray-300 rounded-md p-2 w-full"
               placeholder="Ange pris"
+              disabled
             />
           </div>
 
@@ -66,9 +72,9 @@ const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onC
               <input
                 type="number"
                 value={downPayment}
-                onChange={(e) => setDownPayment(Number(e.target.value))}
                 className="border border-gray-300 rounded-md p-2 w-full"
                 placeholder="Ange belopp"
+                disabled
               />
             </div>
             <div className="flex-1">
@@ -94,7 +100,7 @@ const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onC
                 placeholder="Ange månader"
               />
             </div>
-            <div className="flex-1">
+            {/* <div className="flex-1">
               <label className="block text-sm font-medium mb-2">Restvärde (kr)</label>
               <input
                 type="number"
@@ -103,18 +109,18 @@ const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onC
                 className="border border-gray-300 rounded-md p-2 w-full"
                 placeholder="Ange restvärde"
               />
-            </div>
+            </div> */}
           </div>
 
           <hr className="my-4" />
 
           <div className="flex justify-between mb-4">
-            <span>Kreditbelopp: {price*0.8} kr</span>
-            <span>Eff.ränta: xx.x%</span>
+            <span>Kreditbelopp: <span className='text-2xl'>{price*0.8} kr</span></span>
+            {/* <span>Eff.ränta: <span className='text-2xl'>xx.x %</span></span> */}
           </div>
 
           <div className="flex justify-between items-center bg-[#008d7f] text-white p-4 rounded-md">
-            <span>Månadskostnad: xxx kr</span>
+            <span className='text-xl'>Månadskostnad: <span className='text-3xl'>{Math.round(monthlyValue)} kr</span></span>
             <button onClick={onClose} className="bg-gray-800 text-white px-4 py-2 rounded">nära</button>
           </div>
         </div>

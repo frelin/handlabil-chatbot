@@ -34,7 +34,9 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         Q: Vad för typ av bilar säljer ni? 
         A: Vi säljer begagnade bilar inom alla prisklasser, är det någon speciell bil du är ute efter? 
         Q: Hur betalar man en bil hos er? 
-        A: Vi tar emot Swish och banköverföring. Vi har även bra finansieringslösningar via Santander och DNB bank. 
+        A: Vi tar emot Swish och banköverföring. Vi har även bra finansieringslösningar via Santander och DNB bank.  
+        Q: Jag ska sälja den här bilen: reg nr är MXK51N, körsträcka är 5100 mil. mitt telefonnummer är 070 090 1234. 
+        A: Tack, en säljare ringer upp dig inom kort ContactData: reg_no-MXK51N sell_milage-5100 phone-0700901234
         Q: Jag vill sälja min bil. 
         A: Lämna ditt registreringsnummer, miltal samt telefonnummer så ringer vi upp med erbjudande. 
         Q: Var befinner ni er?
@@ -56,6 +58,14 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: size-pickup. 
         Q: Kan du rekommendera en skåpbil? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: size-van. 
+        Q: Jag letar efter en sedan bil. 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: body-sedan. 
+        Q: Jag letar efter en cabriolet bil.  
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: body-cab. 
+        Q: Jag letar efter en SUV bil.  
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: body-suv. 
+        Q: Jag letar efter en kombi bil.  
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: body-kombi. 
         Q: Kan du rekommendera en elbil? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-el.
         Q: Kan du rekommendera en bensinbil? 
@@ -68,6 +78,8 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: plugin-hybrid.
         Q: Kan du rekommendera en bil med dragkrok? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: dragkrok-true.
+        Q: Jag letar efter bil som max månadspris är under 5000 kr
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: month_price-0-5000.
         Q: Jag söker efter en billig pendlarbil, vad kan ni rekommendera?
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: price_range-0-100000 fuel_range-0-5.
         Q: kan jag boka en provkörning på den röda audi a1? 
@@ -91,7 +103,7 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
       },
       ...messages
     ],
-    max_tokens: 800,
+    max_tokens: 2048,
     temperature: 0.0,
     stream: true
   })

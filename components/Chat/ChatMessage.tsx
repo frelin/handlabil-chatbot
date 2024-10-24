@@ -36,7 +36,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         'service_qhhhy6g',
         'template_mpr8116',
         {
-          message: `car - ${saved_car} ${email != '' ? 'E-Post: ' + email:''}`,
+          message: `car: ${saved_car} ${email != '' ? 'E-Post: ' + email:''}`,
         },
         'A4ybXJWi9VVjLhE5L'
       )
@@ -60,7 +60,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         'service_qhhhy6g',
         'template_mpr8116',
         {
-          message: `car - ${saved_car} ${phone != '' ? 'Telefon: ' + phone:''}`,
+          message: `car: ${saved_car} ${phone != '' ? 'Telefon: ' + phone:''}`,
         },
         'A4ybXJWi9VVjLhE5L'
       )
@@ -75,6 +75,26 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
   };
 
 
+
+  const sendContactData = (reg: string, mil: string, phone: string) => {
+    if(phone){emailjs
+      .send(
+        'service_qhhhy6g',
+        'template_mpr8116',
+        {
+          message: `selling car: ${reg} ${mil} ${phone}`,
+        },
+        'A4ybXJWi9VVjLhE5L'
+      )
+      .then(
+        () => {
+          console.log('sent email');
+        },
+        (error) => {
+          console.error('Failed to send email:', error);
+        }
+      );}
+  };
   const openModal = (index: number) => {
     setIsModalOpen(prevState => {
       const newState = [...prevState];
@@ -109,6 +129,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         const model = filterParts.find((item) => item.includes('model'));
         const gear = filterParts.find((item) => item.includes('gear'));
         const range = filterParts.find((item) => item.includes('price_range'));
+        const month_price = filterParts.find((item) => item.includes('month_price'));
         const fourwheel = filterParts.find((item) => item.includes('fourwheel'));
         const milage_range = filterParts.find((item) => item.includes('milage_range'));
         const fuel_range = filterParts.find((item) => item.includes('fuel_range'));
@@ -118,6 +139,10 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         const size_big = filterParts.find((item) => item.includes('size-big'));
         const size_pickup = filterParts.find((item) => item.includes('size-pickup'));
         const size_van = filterParts.find((item) => item.includes('size-van'));
+        const size_sedan = filterParts.find((item) => item.includes('body-sedan'));
+        const size_cab = filterParts.find((item) => item.includes('body-cab'));
+        const size_suv = filterParts.find((item) => item.includes('body-suv'));
+        const size_kombi = filterParts.find((item) => item.includes('body-kombi'));
         const fuel_el = filterParts.find((item) => item.includes('fuel-el'));
         const fuel_bensin = filterParts.find((item) => item.includes('fuel-bensin'));
         const fuel_diesel = filterParts.find((item) => item.includes('fuel-diesel'));
@@ -125,7 +150,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         const plugin_hybrid = filterParts.find((item) => item.includes('plugin-hybrid'));
 
         localStorage.clear();
-        localStorage.setItem("savedCar", `${make? make.replace('make-', ''): ''} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${range? range: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat: ''} ${dragkrok? dragkrok: ''} ${size_small? size_small: ''}  ${size_big? size_big: ''}  ${size_pickup? size_pickup: ''}  ${size_van? size_van: ''}  ${fuel_el? fuel_el: ''}  ${fuel_bensin? fuel_bensin: ''} ${fuel_diesel? fuel_diesel: ''}  ${fuel_hybrid? fuel_hybrid: ''} ${plugin_hybrid? plugin_hybrid: ''} `)
+        localStorage.setItem("savedCar", `${make? make.replace('make-', ''): ''} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${range? range: ''} ${month_price? month_price: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat: ''} ${dragkrok? dragkrok: ''} ${size_small? size_small: ''}  ${size_big? size_big: ''}  ${size_sedan? size_sedan: ''}  ${size_cab? size_cab: ''}  ${size_suv? size_suv: ''}  ${size_kombi? size_kombi: ''}  ${size_pickup? size_pickup: ''}  ${size_van? size_van: ''}  ${fuel_el? fuel_el: ''}  ${fuel_bensin? fuel_bensin: ''} ${fuel_diesel? fuel_diesel: ''}  ${fuel_hybrid? fuel_hybrid: ''} ${plugin_hybrid? plugin_hybrid: ''} `)
 
         let updatedFilteredData = carData;
 
@@ -185,6 +210,30 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
           );
         }
 
+        if (size_sedan && size_sedan.replace('body-', '').toLowerCase() === 'sedan') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.bodyType?.toLowerCase() === "sedan"
+          );
+        }
+
+        if (size_cab && size_cab.replace('body-', '').toLowerCase() === 'cab') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.bodyType?.toLowerCase() === "cab"
+          );
+        }
+
+        if (size_suv && size_suv.replace('body-', '').toLowerCase() === 'suv') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.bodyType?.toLowerCase().includes("suv")
+          );
+        }
+
+        if (size_kombi && size_kombi.replace('body-', '').toLowerCase() === 'kombi') {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.bodyType?.toLowerCase() === "kombi"
+          );
+        }
+
         if (fuel_el && fuel_el.replace('fuel-', '').toLowerCase() === 'el') {
           updatedFilteredData = updatedFilteredData?.filter((item) =>
             item.fuel?.toLowerCase() === "el"
@@ -216,7 +265,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         }
         if (seat) {
           updatedFilteredData = updatedFilteredData?.filter((item) =>
-            item.additionalVehicleData?.noPassangers >= Number(seat.replace('seat-', ''))
+            item.additionalVehicleData?.noPassangers === Number(seat.replace('seat-', ''))
           );
         }
 
@@ -229,6 +278,16 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
           );
         }
 
+
+        if (month_price) {
+          const [minPrice, maxPrice] = month_price.split('-').slice(1).map(Number);
+          let monthlyInterest = 8.99/12/100;
+          updatedFilteredData = updatedFilteredData?.filter(
+            (item) =>
+              item.price?.value*0.8 * (monthlyInterest / (1 - Math.pow((1 + monthlyInterest), -84))) >= minPrice &&
+              item.price?.value*0.8 * (monthlyInterest / (1 - Math.pow((1 + monthlyInterest), -84))) <= maxPrice
+          );
+        }
         if (milage_range) {
           const [minMile, maxMile] = milage_range.split('-').slice(1).map(Number);
           updatedFilteredData = updatedFilteredData?.filter(
@@ -264,6 +323,20 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
       setChatMessage(message.content.replace(`EmailID: ${filter}`, ''));
       if(filter){sendEmailData(filter);}
       
+    }
+
+    if(message.content.includes('ContactData') && finished) {
+      const filter = message.content.split('ContactData: ')[1];
+      setChatMessage(message.content.split('ContactData: ')[0]);
+      const filterParts = filter.split(' ');
+
+      const reg = filterParts.find((item) => item.includes('reg_no'));
+      const mil = filterParts.find((item) => item.includes('sell_milage'));
+      const phone = filterParts.find((item) => item.includes('phone'));
+
+      if(phone){
+        sendContactData(reg ? reg: '', mil ? mil:'', phone);
+      }
     }
 
     console.log("finished",finished);
