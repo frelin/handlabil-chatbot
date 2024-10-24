@@ -6,8 +6,6 @@ import PriceCalculatorModal from './PriceCalculatorModal';
 import LoadingModal from './LoadingModal';
 import emailjs from 'emailjs-com';
 
-const imageUrlPattern = /https?:\/\/[^\s]+/g;
-
 interface Props {
   message: Message;
   carData: any[];
@@ -21,6 +19,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean[]>([]);
   const [filteredMessage, setFilteredMessage] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [chatMessage, setChatMessage] = useState<string>('');
 
   useEffect(()=>{
     if(carData.length > 0){
@@ -73,7 +72,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
         }
       );}
   };
-  
+
 
   const openModal = (index: number) => {
     setIsModalOpen(prevState => {
@@ -93,6 +92,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
 
 
   useEffect(() => {
+    setChatMessage(message.content);
     if (!message.content) return;
 
     if (message.content.includes('Filter')) {
@@ -112,16 +112,19 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
         const milage_range = filterParts.find((item) => item.includes('milage_range'));
         const fuel_range = filterParts.find((item) => item.includes('fuel_range'));
         const seat = filterParts.find((item) => item.includes('seat'));
+        const dragkrok = filterParts.find((item) => item.includes('dragkrok'));
 
+        localStorage.clear();
         localStorage.setItem(
           "savedCar", `${make?.replace('make-', '')} 
           ${model? model.replace('model-', ''):''} 
           ${gear? gear.replace('gear-', ''): ''} 
-          ${range? 'pris: ' + range: ''} 
+          ${range? range: ''} 
           ${fourwheel? fourwheel : ''} 
           ${milage_range? milage_range: ''} 
           ${fuel_range? fuel_range: ''}
-          ${seat? seat.replace('seat-', ''): ''} `)
+          ${seat? seat.replace('seat-', ''): ''}
+          ${dragkrok? dragkrok.replace('dragkrok-', ''): ''} `)
 
         let updatedFilteredData = carData;
 
@@ -149,9 +152,16 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
           );
         }
 
+        if (dragkrok && dragkrok.replace('dragkrok-', '').toLowerCase() === 'true') {
+          console.log("sdgfdsfdsf", dragkrok);
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.equipment.indexOf('Dragkrok') > -1
+          );
+          console.log("sdgfdsfdsf", updatedFilteredData);
+        }
         if (seat) {
           updatedFilteredData = updatedFilteredData?.filter((item) =>
-            item.additionalVehicleData.noPassangers >= Number(seat.replace('seat-', ''))
+            item.additionalVehicleData?.noPassangers >= Number(seat.replace('seat-', ''))
           );
         }
 
@@ -159,8 +169,8 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
           const [minPrice, maxPrice] = range.split('-').slice(1).map(Number);
           updatedFilteredData = updatedFilteredData?.filter(
             (item) =>
-              Number(item.price.value) >= minPrice &&
-              Number(item.price.value) <= maxPrice
+              item.price?.value >= minPrice &&
+              item.price?.value <= maxPrice
           );
         }
 
@@ -168,8 +178,8 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
           const [minMile, maxMile] = milage_range.split('-').slice(1).map(Number);
           updatedFilteredData = updatedFilteredData?.filter(
             (item) =>
-              Number(item.milage) >= minMile &&
-              Number(item.milage) <= maxMile
+              item.milage >= minMile &&
+              item.milage <= maxMile
           );
         }
 
@@ -178,8 +188,8 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
           const [minFuel, maxFuel] = fuel_range.split('-').slice(1).map(Number);
           updatedFilteredData = updatedFilteredData?.filter(
             (item) =>
-              Number(item.fuels.consumption) >= minFuel &&
-              Number(item.fuels.consumption) <= maxFuel
+              item.additionalVehicleData?.fuels[0]?.consumption >= minFuel &&
+              item.additionalVehicleData?.fuels[0]?.consumption <= maxFuel
           );
         }
 
@@ -187,16 +197,23 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
       }
     }
 
+    if(message.content.includes('EmailContent') && finished) {
+      const filter = message.content.split('EmailContent: ')[1];
+      localStorage.setItem('savedCar', filter);
+      setChatMessage(message.content.replace(`EmailContent: ${filter}`, ''));
+
+    }
+
     if(message.content.includes('EmailID') && finished) {
       const filter = message.content.split('EmailID: ')[1];
-      setFilteredMessage(message.content.replace(` EmailID: ${filter}`, ''));
+      setChatMessage(message.content.replace(`EmailID: ${filter}`, ''));
       sendEmailData(filter);
       
     }
 
     if(message.content.includes('PhoneNumber') && finished) {
       const filter = message.content.split('PhoneNumber: ')[1];
-      setFilteredMessage(message.content.replace(` PhoneNumber: ${filter}`, ''));
+      setChatMessage(message.content.replace(`PhoneNumber: ${filter}`, ''));
       sendPhoneData(filter);
     }
   }, [message.content]);
@@ -356,7 +373,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished }) => {
                     </div>
 
                   ):(
-                    <div>{message.content}</div>
+                    <div>{chatMessage}</div>
                   )}
                 </div>
               )}

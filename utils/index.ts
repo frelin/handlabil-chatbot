@@ -26,7 +26,7 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         Q: Har ni öppet idag? 
         A: Vi har öppet 11-18 vardagar och 11-15 på lördagar. Söndag har vi stängt. 
         Q: Erbjuder ni hemleverans? 
-        A: Absolut, vi erbjuder hemleverans till hela sverige mot en kostnad lämna dina kontaktuppgifter nedan så kontaktar en säljare dig med ett exakt pris. 
+        A: Absolut, vi erbjuder hemleverans till hela Sverige mot en avgift. Kan du lämna dina kontaktuppgifter (e-postadress eller telefonnummer) nedan så kontaktar en säljare dig med ett exakt pris. 
         Q: Vad har ni för telefonnummer? 
         A: Vårt telefonnummer till Uppsala är 018 474 42 50 och Östersund har 063 123 123 
         Q: Tar ni inbytesbilar? 
@@ -48,21 +48,23 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Ja, vi testar alla våra bilar innan uppläggning. Samtliga bilar går även igenom en bilbesiktning av extern part. 
         Q: Jag söker en 7 sitsig bil 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: seat-7.
+        Q: Kan du rekommendera en bil med dragkrok? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: dragkrok-true.
         Q: Jag söker efter en billig pendlarbil, vad kan ni rekommendera?
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: price_range-0-150000 fuel_range-0-5.
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: price_range-0-100000 fuel_range-0-5.
         Q: kan jag boka en provkörning på den röda audi a1? 
-        A: Absolut så kan vi ordna en provkörning. Lämna ditt telefonnummer så ringer en säljare upp för bokning av tid. 
+        A: Absolut så kan vi ordna en provkörning. Lämna ditt telefonnummer så ringer en säljare upp för bokning av tid EmailContent: audi-a1. 
         Q: här är min e-postadress example@domain.com 
         A: Tack. din e-post registrerades framgångsrikt. vår personal kommer att kontakta dig inom kort och du kommer att få info angående ny bil. EmailID: example@domain.com 
-        Q: det här är mitt telefonnummer 000 000 0000 
-        A: Tack. vi har fått ditt nummer. låt oss höra av oss snart. PhoneNumber: '000 000 0000' 
+        Q: det här är mitt telefonnummer 123 456 7890 
+        A: Tack. vi har fått ditt nummer. låt oss höra av oss snart. PhoneNumber: '1234567890' 
         Q: kan du rekommendera en bil med automatlåda och fyrhjulsdrift och max körsträcka på 12000mil. 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: milage_range-0-12000 fourwheel-true gear-automatisk. 
         Q: Kan du rekommendera en tesla model y med automatlåda? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: make-tesla model-model-y gear-automatisk. 
         Q: Kan du rekommendera en Audi a1 med automatlåda? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: make-Audi model-a1 gear-automatisk. 
-        Q: can you recommend a Volkswagen Passat between 200000 kr to 250000 kr? 
+        Q: kan du rekommendera en Volkswagen Passat mellan 200000 kr till 250000 kr? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: make-Volkswagen model-Passat price_range-200000-250000. 
         Q: Köper du bilar? 
         A: Ja så klart. Först och främst köper vi bilar med maximal körsträcka på 20 000 mil och max 10 år gamla. Men i vissa fall även äldre bilar. 
