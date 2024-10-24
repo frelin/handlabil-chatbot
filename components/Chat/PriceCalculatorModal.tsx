@@ -9,7 +9,7 @@ interface PriceCalculatorModalProps {
 const PriceCalculatorModal: React.FC<PriceCalculatorModalProps> = ({ isOpen, onClose, data }) => {
   const [price, setPrice] = useState<number | 0>(Number(data.price.value));
   const [downPayment, setDownPayment] = useState<number | 0>(Number(data.price.value)*0.2);
-  const [interestRate, setInterestRate] = useState<number | 0>(8.49);
+  const [interestRate, setInterestRate] = useState<number | 0>(8.99);
   const [amortizationPeriod, setAmortizationPeriod] = useState<number | 0>(84);
   const [residualValue, setResidualValue] = useState<number | 0>(0);
   const [monthlyValue, setMonthlyValue] = useState<number | 0>(0);
