@@ -98,7 +98,7 @@ export default function Home() {
     setMessages([
       {
         role: "assistant",
-        content: `Välkommen till Handla Bil. Behöver du hjälp?`
+        content: `Hej, välkommen till Handla bil! Vad kan jag hjälpa dig med?`
       }
     ]);
   };
@@ -114,7 +114,7 @@ export default function Home() {
     setMessages([
       {
         role: "assistant",
-        content: `Välkommen till Handla Bil. Behöver du hjälp?`
+        content: `Hej, välkommen till Handla bil! Vad kan jag hjälpa dig med?`
       }
     ]);
   }, []);

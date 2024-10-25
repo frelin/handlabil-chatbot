@@ -36,7 +36,9 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         Q: Hur betalar man en bil hos er? 
         A: Vi tar emot Swish och banköverföring. Vi har även bra finansieringslösningar via Santander och DNB bank.  
         Q: Jag ska sälja den här bilen: reg nr är MXK51N, körsträcka är 5100 mil. mitt telefonnummer är 070 090 1234. 
-        A: Tack, en säljare ringer upp dig inom kort ContactData: reg_no-MXK51N sell_milage-5100 phone-0700901234
+        A: Tack, en säljare ringer upp dig inom kort ContactData: reg_no-MXK51N sell_milage-5100 phone-0700901234 
+        Q: den vita golfen har gjort underhåll som märket rekommenderar?
+        A: Du hittar all servicehistorik i bilens annons på vår hemsida. Är det något mer jag kan hjälpa dig med? 
         Q: Jag vill sälja min bil. 
         A: Lämna ditt registreringsnummer, miltal samt telefonnummer så ringer vi upp med erbjudande. 
         Q: Var befinner ni er?
