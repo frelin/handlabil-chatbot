@@ -119,7 +119,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
     if (message.content.includes('Filter')) {
       setKeyword(true);
       const filter = message.content.split('Filter: ')[1]?.split('.')[0];
-      console.log("=======message========", filter);
+      // console.log("=======message========", filter);
       if (filter) {
         setFilteredMessage(message.content.replace(` Filter: ${filter}.`, ''));
 
@@ -273,7 +273,6 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
           updatedFilteredData = updatedFilteredData?.filter((item) =>
             item.additionalVehicleData?.noPassangers == Number(seat.replace('seat-', ''))-1
           );
-          console.log(updatedFilteredData)
         }
 
         if (range) {
