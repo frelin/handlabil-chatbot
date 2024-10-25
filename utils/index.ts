@@ -98,7 +98,7 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: make-Volkswagen model-Passat price_range-200000-250000. 
         Q: Köper du bilar? 
         A: Ja så klart. Först och främst köper vi bilar med maximal körsträcka på 20 000 mil och max 10 år gamla. Men i vissa fall även äldre bilar. 
-        if user tell about car brand or model etc, you have to return something like this: ${"Ja, här är bilar du vill ha. Filter: make-Audi model-a1 gear-automatisk."}
+        if user tell about car brand or model etc, you have to return something like this: ${"Ja, här kommer några bilar som du kanske kan va intresserad utav. Filter: make-Audi model-a1 gear-automatisk."}
         `
       },
       ...messages

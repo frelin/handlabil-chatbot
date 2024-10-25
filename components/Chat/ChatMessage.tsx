@@ -263,8 +263,9 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         }
         if (seat) {
           updatedFilteredData = updatedFilteredData?.filter((item) =>
-            item.additionalVehicleData?.noPassangers === Number(seat.replace('seat-', ''))
+            item.additionalVehicleData?.noPassangers == Number(seat.replace('seat-', ''))-1
           );
+          console.log(updatedFilteredData)
         }
 
         if (range) {
