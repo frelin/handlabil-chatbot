@@ -67,21 +67,25 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         Q: Jag letar efter en kombi bil.  
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: body-kombi. 
         Q: Kan du rekommendera en elbil? 
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-el.
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-el. 
         Q: Kan du rekommendera en bensinbil? 
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-bensin.
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-bensin. 
         Q: Kan du rekommendera en dieselbil? 
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-diesel.
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-diesel. 
         Q: Kan du rekommendera en Drivmedel Hybridbil? 
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-hybrid.
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: fuel-hybrid. 
         Q: Kan du rekommendera en laddhybridbil? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: plugin-hybrid.
         Q: Kan du rekommendera en bil med dragkrok? 
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: dragkrok-true.
-        Q: Jag letar efter bil som max månadspris är under 5000 kr
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: month_price-0-5000.
-        Q: Jag söker efter en billig pendlarbil, vad kan ni rekommendera?
-        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: price_range-0-100000 fuel_range-0-5.
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: dragkrok-true. 
+        Q: Jag letar efter bil som max månadspris är under 5000 kr. 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: month_price-0-5000. 
+        Q: Jag letar efter en bil med max årsskatt på 1400 kr. 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: tax_range-0-1400. 
+        Q: Har ni några Audi med S-line paket?  
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: package-sline. 
+        Q: Jag söker efter en billig pendlarbil, vad kan ni rekommendera? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: price_range-0-100000 fuel_range-0-5. 
         Q: kan jag boka en provkörning på den röda audi a1? 
         A: Absolut så kan vi ordna en provkörning. Lämna ditt telefonnummer så ringer en säljare upp för bokning av tid EmailContent: audi-a1. 
         Q: här är min e-postadress example@domain.com 

@@ -148,15 +148,23 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         const fuel_diesel = filterParts.find((item) => item.includes('fuel-diesel'));
         const fuel_hybrid = filterParts.find((item) => item.includes('fuel-hybrid'));
         const plugin_hybrid = filterParts.find((item) => item.includes('plugin-hybrid'));
+        const tax_range = filterParts.find((item) => item.includes('tax_range'));
+        const package_item = filterParts.find((item) => item.includes('package-sline'));
 
         localStorage.clear();
-        localStorage.setItem("savedCar", `${make? make.replace('make-', ''): ''} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${range? range: ''} ${month_price? month_price: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat: ''} ${dragkrok? dragkrok: ''} ${size_small? size_small: ''}  ${size_big? size_big: ''}  ${size_sedan? size_sedan: ''}  ${size_cab? size_cab: ''}  ${size_suv? size_suv: ''}  ${size_kombi? size_kombi: ''}  ${size_pickup? size_pickup: ''}  ${size_van? size_van: ''}  ${fuel_el? fuel_el: ''}  ${fuel_bensin? fuel_bensin: ''} ${fuel_diesel? fuel_diesel: ''}  ${fuel_hybrid? fuel_hybrid: ''} ${plugin_hybrid? plugin_hybrid: ''} `)
+        localStorage.setItem("savedCar", `${make? make.replace('make-', ''): ''} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${range? range: ''} ${month_price? month_price: ''} ${tax_range? tax_range: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat: ''} ${dragkrok? dragkrok: ''} ${size_small? size_small: ''}  ${size_big? size_big: ''}  ${size_sedan? size_sedan: ''}  ${size_cab? size_cab: ''}  ${size_suv? size_suv: ''}  ${size_kombi? size_kombi: ''}  ${size_pickup? size_pickup: ''}  ${size_van? size_van: ''}  ${fuel_el? fuel_el: ''}  ${fuel_bensin? fuel_bensin: ''} ${fuel_diesel? fuel_diesel: ''}  ${fuel_hybrid? fuel_hybrid: ''} ${plugin_hybrid? plugin_hybrid: ''} ${package_item? package_item: ''} `)
 
         let updatedFilteredData = carData;
 
         if (make) {
           updatedFilteredData = updatedFilteredData?.filter((item) =>
             item.name.toLowerCase().includes(make.replace('make-', '').toLowerCase())
+          );
+        }
+
+        if (package_item) {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.name.toLowerCase().includes("s-line")
           );
         }
 
@@ -277,6 +285,15 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
           );
         }
 
+
+        if (tax_range) {
+          const [minTax, maxTax] = tax_range.split('-').slice(1).map(Number);
+          updatedFilteredData = updatedFilteredData?.filter(
+            (item) =>
+              Number(item.description?.split("Årsskatt: ")[1]?.split("kr")[0].replace(".", "")) >= minTax &&
+            Number(item.description?.split("Årsskatt: ")[1]?.split("kr")[0].replace(".", "")) <= maxTax
+          );
+        }
 
         if (month_price) {
           const [minPrice, maxPrice] = month_price.split('-').slice(1).map(Number);
