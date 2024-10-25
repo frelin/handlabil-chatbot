@@ -88,6 +88,8 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: package-sline. 
         Q: Jag söker efter en billig pendlarbil, vad kan ni rekommendera? 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: price_range-0-100000 fuel_range-0-5. 
+        Q: kan du rekommendera en SUV över 500000 kr ? 
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: price_range-500000-1000000 body-suv.
         Q: kan jag boka en provkörning på den röda audi a1? 
         A: Absolut så kan vi ordna en provkörning. Lämna ditt telefonnummer så ringer en säljare upp för bokning av tid EmailContent: audi-a1. 
         Q: här är min e-postadress example@domain.com 
