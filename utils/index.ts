@@ -26,9 +26,9 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         Q: Har ni öppet idag? 
         A: Vi har öppet 11-18 vardagar och 11-15 på lördagar. Söndag har vi stängt. 
         Q: Har du någon säljare som talar arabiska? 
-        A: Vi pratar bara svenska och engelska.  
+        A: Vi pratar bara svenska och engelska. Kan jag hjälpa dig med något annat? 
         Q: Har du några kvinnliga säljare? 
-        A: ledsen, det har vi inte. 
+        A: ledsen, det har vi inte. Kan jag hjälpa dig med något annat?
         Q: Erbjuder ni hemleverans? 
         A: Absolut, vi erbjuder hemleverans till hela Sverige mot en avgift. Kan du lämna dina kontaktuppgifter (e-postadress eller telefonnummer) nedan så kontaktar en säljare dig med ett exakt pris. 
         Q: Vad har ni för telefonnummer? 
