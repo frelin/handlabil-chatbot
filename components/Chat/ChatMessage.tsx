@@ -119,7 +119,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
     if (message.content.includes('Filter')) {
       setKeyword(true);
       const filter = message.content.split('Filter: ')[1]?.split('.')[0];
-      // console.log("=======message========", filter);
+      console.log("=======message========", filter);
       if (filter) {
         setFilteredMessage(message.content.replace(` Filter: ${filter}.`, ''));
 
@@ -128,6 +128,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         const make = filterParts.find((item) => item.includes('make'));
         const model = filterParts.find((item) => item.includes('model'));
         const gear = filterParts.find((item) => item.includes('gear'));
+        const color = filterParts.find((item) => item.includes('color'));
         const range = filterParts.find((item) => item.includes('price_range'));
         const month_price = filterParts.find((item) => item.includes('month_price'));
         const fourwheel = filterParts.find((item) => item.includes('fourwheel'));
@@ -152,7 +153,7 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         const package_item = filterParts.find((item) => item.includes('package-sline'));
 
         localStorage.clear();
-        localStorage.setItem("savedCar", `${make? make.replace('make-', ''): ''} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${range? range: ''} ${month_price? month_price: ''} ${tax_range? tax_range: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat: ''} ${dragkrok? dragkrok: ''} ${size_small? size_small: ''}  ${size_big? size_big: ''}  ${size_sedan? size_sedan: ''}  ${size_cab? size_cab: ''}  ${size_suv? size_suv: ''}  ${size_kombi? size_kombi: ''}  ${size_pickup? size_pickup: ''}  ${size_van? size_van: ''}  ${fuel_el? fuel_el: ''}  ${fuel_bensin? fuel_bensin: ''} ${fuel_diesel? fuel_diesel: ''}  ${fuel_hybrid? fuel_hybrid: ''} ${plugin_hybrid? plugin_hybrid: ''} ${package_item? package_item: ''} `)
+        localStorage.setItem("savedCar", `${make? make.replace('make-', ''): ''} ${model? model.replace('model-', ''):''} ${gear? gear.replace('gear-', ''): ''} ${color? color.replace('color-', ''): ''} ${range? range: ''} ${month_price? month_price: ''} ${tax_range? tax_range: ''} ${fourwheel? fourwheel : ''}  ${milage_range? milage_range: ''} ${fuel_range? fuel_range: ''} ${seat? seat: ''} ${dragkrok? dragkrok: ''} ${size_small? size_small: ''}  ${size_big? size_big: ''}  ${size_sedan? size_sedan: ''}  ${size_cab? size_cab: ''}  ${size_suv? size_suv: ''}  ${size_kombi? size_kombi: ''}  ${size_pickup? size_pickup: ''}  ${size_van? size_van: ''}  ${fuel_el? fuel_el: ''}  ${fuel_bensin? fuel_bensin: ''} ${fuel_diesel? fuel_diesel: ''}  ${fuel_hybrid? fuel_hybrid: ''} ${plugin_hybrid? plugin_hybrid: ''} ${package_item? package_item: ''} `)
 
         let updatedFilteredData = carData;
 
@@ -177,6 +178,12 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
         if (gear) {
           updatedFilteredData = updatedFilteredData?.filter((item) =>
             item.gearBox.toLowerCase().includes(gear.replace('gear-', '').toLowerCase())
+          );
+        }
+
+        if (color) {
+          updatedFilteredData = updatedFilteredData?.filter((item) =>
+            item.additionalVehicleData?.color.toLowerCase() === color.replace('color-', '').toLowerCase()
           );
         }
 
@@ -403,24 +410,47 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
               <div className="my-2 w-full">
                 {/* Image slider */}
                 <div className="relative w-full max-w-[100%] h-[200px] overflow-hidden">
-                  <a
+                  {
+                    !!item.images ? (<a
                     className="flex justify-center"
                     href={item.images[currentIndex[index]]?.imageFormats[0].url}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     { 
-                      item.images[currentIndex[index]]?.imageFormats[0].url &&
-                      <Image
+                      item.images[currentIndex[index]]?.imageFormats[0].url ?
+                      (<Image
                         src={item.images[currentIndex[index]]?.imageFormats[0].url}
                         alt={`Image ${currentIndex[index]}`}
                         width="300"
                         height="200"
                         style={{ borderRadius: '8px' }}
                         priority
-                      />
+                      />):(
+                        <div className="flex relative w-full h-full justify-center items-center">
+                          <Image
+                            src={Robot}
+                            alt={`Image default`}
+                            width="88"
+                            height="88"
+                            style={{ borderRadius: '8px', objectFit: 'contain' }}
+                            priority
+                          />
+                        </div>
+                      )
                     }
-                  </a>
+                  </a>):(
+                    <div className="flex relative w-full h-full justify-center items-center">
+                      <Image
+                        src={Robot}
+                        alt={`Image default`}
+                        width="88"
+                        height="88"
+                        style={{ borderRadius: '8px', objectFit: 'contain' }}
+                        priority
+                      />
+                    </div>
+                  )}
 
                   {/* Navigation buttons */}
                   <button

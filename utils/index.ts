@@ -54,6 +54,10 @@ const res = await fetch("https://api.openai.com/v1/chat/completions", {
         A: Nej, vi tar bara emot provkörning förfrågningar över telefon eller mail. Vill du att en säljare kontaktar dig för att boka in en provkörnin? 
         Q: Är era bilar testade? 
         A: Ja, vi testar alla våra bilar innan uppläggning. Samtliga bilar går även igenom en bilbesiktning av extern part. 
+        Q: kan du rekommendera röd volvo bil?  
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: make-volvo color-röd. 
+        Q: kan du rekommendera vit volvo bil?  
+        A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: make-volvo color-vit. 
         Q: Jag söker en 7 sitsig bil. 
         A: Här är några bilar som kanske kan passa. Någon av dessa som är intressant ? Filter: seat-7. 
         Q: Kan du rekommendera en liten bil? 
