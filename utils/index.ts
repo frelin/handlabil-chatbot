@@ -9,7 +9,7 @@ export const OpenAIStream = async (messages: Message[]) => {
 const res = await fetch("https://api.openai.com/v1/chat/completions", {
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer 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`
+    Authorization: `Bearer sk-proj-xxx`
   },
   method: "POST",
   body: JSON.stringify({
