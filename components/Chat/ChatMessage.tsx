@@ -33,12 +33,12 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
     var saved_car = localStorage.getItem("savedCar");
     if(email){emailjs
       .send(
-        'service_qhhhy6g',
-        'template_mpr8116',
+        'service_b9zh1bw',
+        'template_7xqj06n',
         {
           message: `car: ${saved_car} ${email != '' ? 'E-Post: ' + email:''}`,
         },
-        'A4ybXJWi9VVjLhE5L'
+        'QNu13PH7HAJflnOPl'
       )
       .then(
         () => {
@@ -57,12 +57,12 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
     var saved_car = localStorage.getItem("savedCar");
     if(phone){emailjs
       .send(
-        'service_qhhhy6g',
-        'template_mpr8116',
+        'service_b9zh1bw',
+        'template_7xqj06n',
         {
           message: `car: ${saved_car} ${phone != '' ? 'Telefon: ' + phone:''}`,
         },
-        'A4ybXJWi9VVjLhE5L'
+        'QNu13PH7HAJflnOPl'
       )
       .then(
         () => {
@@ -79,12 +79,12 @@ export const ChatMessage: FC<Props> = ({ message, carData, finished, reset }) =>
   const sendContactData = (reg: string, mil: string, phone: string) => {
     if(phone){emailjs
       .send(
-        'service_qhhhy6g',
-        'template_mpr8116',
+        'service_b9zh1bw',
+        'template_7xqj06n',
         {
           message: `selling car: ${reg} ${mil} ${phone}`,
         },
-        'A4ybXJWi9VVjLhE5L'
+        'QNu13PH7HAJflnOPl'
       )
       .then(
         () => {
