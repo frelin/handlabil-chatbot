@@ -15,7 +15,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchCarData = async () => {
-      const res = await fetch(`/api/carData`);
+      const res = await fetch(`/api/carData`, { next: { revalidate: 600 } });
       const data = await res.json();
       setCarData(data);
     };
