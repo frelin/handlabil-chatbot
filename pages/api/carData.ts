@@ -9,6 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       method: 'GET',
       headers: {
         'X-Auth-Token': apiToken
+      },
+      next: {
+        revalidate: 600
       }
     });
 
